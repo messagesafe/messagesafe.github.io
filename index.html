@@ -878,7 +878,8 @@ function checkpw(plaintext, hashed, callback, progress) {
         var div = document.getElementById('largeCodes')
         if(div.style.display=='none'){
             div.style.display = 'block'
-            div.innerHTML = '<hr>'+form.code.value+'<hr>'
+            div.innerHTML = '<hr>'+form.code.value+'<div style="background-color:powderblue;"><hr><br><br><br><br><br><br><br><br><br><br><br>'+
+                            '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>'
         }else div.style.display = 'none'    
     }
     function showDecimals(){
