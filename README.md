@@ -16,7 +16,7 @@ It is also wise to save the MessageSafe file (which is 'index.html') somewhere i
 
 ## Cryptography
 
-MessageSafe employs a simple to verify encryption method, which needs a public review to determine how safe it is.
+MessageSafe employs a simple to verify encryption method, which needs a public review to determine how safe it is. The question for an idea review was posted on [crypto.stackexchange.com.](https://crypto.stackexchange.com/questions/53042/practical-bcrypt-plus-xor-encryption-for-small-messages)
 
 It few words, MessageSafe uses well known BCrypt function to hash passwords. BCrypt is used repeatedly on the result of prior hashing to concatenate all the hashes as a Key, which has to be as long as the Message itself.  The encryption is a simple Key XOR Message. Details are below:
 
