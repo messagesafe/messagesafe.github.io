@@ -16,7 +16,11 @@ It is also wise to save the MessageSafe file (which is 'index.html') somewhere i
 
 ## Cryptography
 
-MessageSafe employs a simple to verify encryption method, which needs a public review. Until then it should be considered vulnerable to a serious attack, though it should be safe with everyday home burglar. Theoretically similar approach is discussed [here](https://crypto.stackexchange.com/questions/35809/whats-wrong-with-xor-encryption-with-hash-and-an-iterated-salt).
+MessageSafe employs a simple to verify encryption method, which needs a public review to determine how safe it is.
+
+It few words, MessageSafe uses well known BCrypt function to hash passwords. BCrypt is used repeatedly on the result of prior hashing to concatenate all the hashes as a Key, which has to be as long as the Message itself.  The encryption is a simple Key XOR Message. Details are below:
+
+Encryption
 
     Message = Any Ascii128 text
 
@@ -50,11 +54,15 @@ Decryption
      
      CheckSum = SecureCode.substring(1 to 4) 
 		
-     Key = <see above>		
+     Password = <see in Encryption>		
+     
+     Key = <see in Encryption>		
 		
      Message = SecureCode.substring(from 5) XOR Key
-     
-     Integrity check = recovered CheckSum must match newly calculated CheckSum
+
+     CalculatedCheckSum = <see in Encryption>	
+
+     Integrity check = recovered CheckSum must match CalculatedCheckSum
 		
     
 Note. BCrypt salt is hard coded and is removed from the resulting hash, when applying BCrypt function.
