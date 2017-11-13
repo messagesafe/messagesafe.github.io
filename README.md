@@ -1,7 +1,7 @@
 MessageSafe
 ===========
 
-[An HTML based offline encryption tool for highly valuable short messages](https://messagesafe.github.io/)
+[An HTML based offline encryption/decryption tool for highly valuable short messages](https://messagesafe.github.io/)
 
 ## The Problem
 
@@ -13,7 +13,7 @@ Using MessageSafe and the below routine, the secret can be encrypted securely.
 
 1. Open MessageSafe in any old smart phone (or tablet computer) as a web page.  
 2. Put the device in "airplane mode". MessageSafe is a single HTML file, it will work offline.
-3. Enter the secret, the pasword (or several passwords), and press Encrypt
+3. Enter the secret, the password (or several passwords), and press Encrypt
 4. Press "Enlarge to make a photograph" button to show large encrypted codes.
 4. Make a picture of the codes with your other phone, this is the secure picture you want to store.
 5. Without connecting to anywhere, go to settings and do a complete "Factory Reset" for the first device. (If the secret is really valuable, the device can even be physically destroyed)
@@ -32,7 +32,7 @@ Encryption
 
     Pass1, Pass2, Pass3, Pass4, Pass5 = Ascii128 based 5 password fields, with white spaces removed
 
-    Password =  Concatenate(Sort(Pass1, Pass2, Pass3, Pass4, Pass5))
+    Password = Concatenate(Sort(Pass1, Pass2, Pass3, Pass4, Pass5))
 
     Key = SHA256(BCrypt(SHA256(Password)))		
 
@@ -51,7 +51,7 @@ Decryption
     
 Note. There is no checksum, as not required for the intended use
 
-Note. BCrypt salt is just a hash of the password, what is equivalent to no salt used. AES is employed in CBC mode with hardcodded initialization array. This is due to the requirement to have the same output for the same input and password. 
+Note. BCrypt salt is just a hash of the password, what is equivalent to no salt used. AES is employed in CBC mode with hard coded initialization array. This is due to the requirement to have the same output for the same input and password. 
 
 
 
