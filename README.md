@@ -18,7 +18,7 @@ Using MessageSafe and the below routine the secret can be encrypted securely.
 4. Make a picture of the codes with your other phone, this is the secure picture you want to store.
 5. Without connecting to anywhere, go to settings and do a complete "Factory Reset" for the first device. (If the secret is really valuable, the device can even be physically destroyed)
 
-For the decryption the same routine can be followed. 
+Similar routine can be followed for decryption. 
 
 Note. If you do use MessageSafe, it is wise to save its single HTML file in your mail box, in order to ensure future independent decryptions.
 
