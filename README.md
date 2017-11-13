@@ -9,7 +9,7 @@ If there is a highly valuable secret (like access key, recovery seed, crypto cur
 
 ## The Solution
 
-Using MessageSafe and the below routine, the secret can be encrypted securely.
+Using MessageSafe and the below routine the secret can be encrypted securely.
 
 1. Open MessageSafe in any old smart phone (or tablet computer) as a web page.  
 2. Put the device in "airplane mode". MessageSafe is a single HTML file, it will work offline.
