@@ -1,7 +1,7 @@
 MessageSafe
 ===========
 
-[An HTML based offline encryption/decryption tool for highly valuable short messages](https://messagesafe.github.io/)
+An HTML based offline encryption/decryption tool for highly valuable short messages [(Available Here)](https://messagesafe.github.io/)
 
 ## The Problem
 
