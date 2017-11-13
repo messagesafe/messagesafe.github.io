@@ -20,7 +20,7 @@ Using MessageSafe and the below routine the secret can be encrypted securely.
 
 For the decryption the same routine can be followed. 
 
-Note, if you do use MessageSafe, it is wise to save its single HTML file in your mail box, in order to ensure future independent decryptions.
+Note. If you do use MessageSafe, it is wise to save its single HTML file in your mail box, in order to ensure future independent decryptions.
 
 ## Cryptography
 
@@ -38,7 +38,7 @@ Encryption
 
     Code = AES.encrypt(Message, Key)
     
-    SafeMessage = fromAscii256toBase32(SecureCode)
+    SafeMessage = fromAscii256toBase32(Code)
     
 Decryption
 
@@ -49,7 +49,7 @@ Decryption
      Message = AES.decrypt(Code, Key)
     
     
-Note. There is no checksum, as not required for the intended use
+Note. There is no checksum. Multiple copies of the SafeMessage will be stored in many locations. Message integrity is not an issue.
 
 Note. BCrypt salt is just a hash of the password, what is equivalent to no salt used. AES is employed in CBC mode with hard coded initialization array. This is due to the requirement to have the same output for the same input and password. 
 
