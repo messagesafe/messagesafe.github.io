@@ -1,68 +1,59 @@
 MessageSafe
 ===========
 
-[An HTML based message encryption tool](https://messagesafe.github.io/)
+[An HTML based offline encryption tool for highly valuable short messages](https://messagesafe.github.io/)
 
 ## The Problem
 
-Whenever we have highly valuable secrets like access keys, recovery seeds, crypto currency addresses, it would be nice to secure them with a password. Unfortunately, the encryption has to be done on a computer, which is by no means a trusted medium. The secret or the password can be compromised by malicious software. 
+If there is a highly valuable secret (like access key, recovery seed, crypto currency address), it is probably written on paper and is stored in a safe. It would be nice to encrypt it with a password and store it in several less secure locations, even in a mail box. Unfortunately, to do this, one would have to expose the secret to a computer, where the encryption would be performed. If the computer is infected by malicious software, the secret can be stolen. 
 
 ## The Solution
 
-MessageSafe is implemented as a single HTML file, which can be opened on any old smart phone (or tablet computer) as a web page. The phone has to be put in "airplane mode", and the encryption process performed. The resulting codes have to be photographed from the screen (by another device), and the phone has to be factory reset. If message is really valuable, this old smart phone which saw your secret can be burned in fire.
+Using MessageSafe and the below routine, the secret can be encrypted securely.
 
-It is also wise to save the MessageSafe file (which is 'index.html') somewhere in your mailbox, so you would not be dependent on the web site for future recoveries
+1. Open MessageSafe in any old smart phone (or tablet computer) as a web page.  
+2. Put the device in "airplane mode". MessageSafe is a single HTML file, it will work offline.
+3. Enter the secret, the pasword (or several passwords), and press Encrypt
+4. Press "Enlarge to make a photograph" button to show large encrypted codes.
+4. Make a picture of the codes with your other phone, this is the secure picture you want to store.
+5. Without connecting to anywhere, go to settings and do a complete "Factory Reset" for the first device. (If the secret is really valuable, the device can even be physically destroyed)
 
+For the decryption the same routine can be followed. 
+
+Note, if you do use MessageSafe, it is wise to save its single HTML file in your mail box, in order to ensure future independent decryptions.
 
 ## Cryptography
 
-MessageSafe employs a simple to verify encryption method, which needs a public review to determine how safe it is. The question for an idea review was posted on [crypto.stackexchange.com.](https://crypto.stackexchange.com/questions/53042/practical-bcrypt-plus-xor-encryption-for-small-messages)
-
-It few words, MessageSafe uses well known BCrypt function to hash passwords. BCrypt is used repeatedly on the result of prior hashing to concatenate all the hashes as a Key, which has to be as long as the Message itself.  The encryption is a simple Key XOR Message. Details are below:
+MessageSafe uses third party JavaScript implementations of standard security protocols 
 
 Encryption
 
     Message = Any Ascii128 text
 
-    Pass1, Pass2, Pass3, Pass4, Pass5 = Ascii128 based 5 password fields 
+    Pass1, Pass2, Pass3, Pass4, Pass5 = Ascii128 based 5 password fields, with white spaces removed
 
-    Password = Pass1 XOR Pass2 XOR Pass3 XOR Pass4 XOR Pass5
+    Password =  Concatenate(Sort(Pass1, Pass2, Pass3, Pass4, Pass5))
 
-    Checksum = {
-        ShortMessage = Message 
-        Repeat while ShortMessage is longer than 50 chars,
-		        ShortMessage is cut in half, and the halves XOR to get new ShortMessage
-        ChecksumBase = fromBase64toAscii128(BCrypt(ShortMessage XOR Password))
-        Checksum = ChecksumBase.substring(1 to 4)
-    }
-    Key = {
-        LongKey = BCrypt(Password + Checksum)
-        CurrentKey = LongKey + Checksum
-        Repeat while LongKey.length < Message.length,  
-		        CurrentKey = BCrypt(CurrentKey)
-		        LongKey = CurrentKey + LongKey
-        Key = fromBase64toAscii128(LongKey)
-    }
+    Key = SHA256(BCrypt(SHA256(Password)))		
 
-    SecureCode = Checksum + (Message XOR Key)
-
-    SafeMessage = fromAscii128toBase32(SecureCode)
+    Code = AES.encrypt(Message, Key)
+    
+    SafeMessage = fromAscii256toBase32(SecureCode)
     
 Decryption
 
-     SecureCode = fromBase32toAscii128(SafeMessage)
-     
-     CheckSum = SecureCode.substring(1 to 4) 
-		
-     Password = <see in Encryption>		
+     Code = fromBase32toAscii256(SafeMessage)
      
      Key = <see in Encryption>		
-		
-     Message = SecureCode.substring(from 5) XOR Key
-
-     CalculatedCheckSum = <see in Encryption>	
-
-     Integrity check = recovered CheckSum must match CalculatedCheckSum
-		
+	
+     Message = AES.decrypt(Code, Key)
     
-Note. BCrypt salt is hard coded and is removed from the resulting hash, when applying BCrypt function.
+    
+Note. There is no checksum, as not required for the intended use
+
+Note. BCrypt salt is just a hash of the password, what is equivalent to no salt used. AES is employed in CBC mode with hardcodded initialization array. This is due to the requirement to have the same output for the same input and password. 
+
+
+
+
+
