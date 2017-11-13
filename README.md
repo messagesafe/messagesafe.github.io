@@ -24,7 +24,7 @@ Note. If you do use MessageSafe, it is wise to save its single HTML file in your
 
 ## Cryptography
 
-MessageSafe uses third party JavaScript implementations of standard security protocols 
+MessageSafe uses third party JavaScript implementations of standard security protocols. Details can be found in the code itself. 
 
 Encryption
 
