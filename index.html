@@ -1711,11 +1711,6 @@ if (typeof module != 'undefined' && module.exports) module.exports = Sha256; // 
             64, function(i){return BASE64_CODE[i].charCodeAt(0)}
         )    
     }     
-    function fromHexToByteArray(hex) {
-        var bytes = []
-        for (i = 0; i < hex.length; i += 2) bytes.push(parseInt(hex.substr(i, 2), 16));
-        return bytes
-    }
     function fromByteArrayTo256(bytes){
         var s = ''
         for(i=0;i<bytes.length;i++) s += String.fromCharCode(bytes[i])
@@ -1726,6 +1721,14 @@ if (typeof module != 'undefined' && module.exports) module.exports = Sha256; // 
         for (i = 0; i < str.length; i++) bytes.push(str.charCodeAt(i))
         return bytes
     } 
+    function fromHexToByteArray(hex) {
+        var bytes = []
+        for (i = 0; i < hex.length; i += 2) bytes.push(parseInt(hex.substr(i, 2), 16));
+        return bytes
+    }
+    function fromHexToBase64(hex) {
+        return from256to64(fromByteArrayTo256(fromHexToByteArray(hex)))
+    }
     function isAscii128(txt) {
         for(var i=0;i<txt.length;i++) if(txt.charCodeAt(i)>=128) return false
         return true
@@ -1739,14 +1742,14 @@ if (typeof module != 'undefined' && module.exports) module.exports = Sha256; // 
     function bCrypt(password, resultCallBackFunction, statusFunction){
         hashpw(
             password, 
-            "$2a$"+form.level.value+"$"+from256to64(fromByteArrayTo256(fromHexToByteArray(sha256(password)))), // extra length ignored by BCrypt
+            "$2a$"+form.level.value+"$"+fromHexToBase64(sha256(password)).substring(0,22),
             resultCallBackFunction, 
             statusFunction);
     }
 
 
     function aes(pass){
-        var iv = [ 5, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85 ]; // Initialization vector is hardcodded
+        var iv = [ 5, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85 ]; // Initialization vector is hard coded
         return new aesjs.ModeOfOperation.cbc(fromHexToByteArray(sha256(pass)), iv);
     }
   
@@ -1775,15 +1778,15 @@ if (typeof module != 'undefined' && module.exports) module.exports = Sha256; // 
         if(pass.length==0) {
             cleanUp()
             statusField.value = "Password is empty"
-        } else if(!isAscii128( pass))  {
+        } else if(!isAscii128(pass))  {
             cleanUp()
             statusField.value = "Password uses invalid character, use Ascii128 only"
         } else bCrypt(
-            sha256(masterPass()),
+            fromHexToBase64(sha256(masterPass())),
             function(hash) { if(runId==RUN_ID) {
                cleanUp()
                try{ 
-                   callBack(hash.substring(29))
+                   callBack(hash)
                }catch(e){statusField.value=e}    
                cleanUp()
             }},
@@ -1910,11 +1913,11 @@ if (typeof module != 'undefined' && module.exports) module.exports = Sha256; // 
     <textarea name="text" rows="4" style="width:95%;font-size:20px">Text to encrypt.</textarea><br><br>
     
     <b>Password</b> &nbsp;&nbsp;&nbsp;<input type="button" value="Clear" onClick="pwdClear()">&nbsp;&nbsp;&nbsp;&nbsp;<small>Password spaces are ignored</small><br>  
-        <input type="text" name="pass0" style="font-size:20px" size=30 value="Carphagen" > <br> <div id='cBox' style='display:none'>
-        <input type="text" name="pass1" style="font-size:20px" size=30> <br>
-        <input type="text" name="pass2" style="font-size:20px" size=30> <br>
-        <input type="text" name="pass3" style="font-size:20px" size=30> <br> 
-        <input type="text" name="pass4" style="font-size:20px" size=30> <br>
+        <input type="text" name="pass0" style="font-size:20px" size=60 value="Carphagen" > <br> <div id='cBox' style='display:none'>
+        <input type="text" name="pass1" style="font-size:20px" size=60> <br>
+        <input type="text" name="pass2" style="font-size:20px" size=60> <br>
+        <input type="text" name="pass3" style="font-size:20px" size=60> <br> 
+        <input type="text" name="pass4" style="font-size:20px" size=60> <br>
         <small>Order of passwords is not important, they are sorted before use</small>
         </div>    
         <input type="checkbox" name="multiPass" onChange="pwdMultiCheck()"><small>Multiple Passwords</small><br><br>
