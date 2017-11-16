@@ -1729,11 +1729,18 @@ if (typeof module != 'undefined' && module.exports) module.exports = Sha256; // 
     function fromHexToBase64(hex) {
         return from256to64(fromByteArrayTo256(fromHexToByteArray(hex)))
     }
+    function fromHexToBase32(hex) {
+        return from256to32(fromByteArrayTo256(fromHexToByteArray(hex)))
+    }
     function isAscii128(txt) {
         for(var i=0;i<txt.length;i++) if(txt.charCodeAt(i)>=128) return false
         return true
     }    
-
+    function stringHashCode(txt) {
+      var hash = 5381, i = txt.length
+      while(i) hash = (hash * 33) ^ txt.charCodeAt(--i)
+      return hash >>> 0;
+    }    
     //============================================  Imported (in the above) crypto API wrap ================================================================
     function sha256(message){
         return Sha256.hash(message)
@@ -1812,11 +1819,14 @@ if (typeof module != 'undefined' && module.exports) module.exports = Sha256; // 
             form.code.value = code
         })            
     }
-    function decrypt(){
+    function clearedCode(){
         var v = form.code.value.toLowerCase()
         var s=""; 
         for(var i=0; i<v.length; i++) if(INDEX32[v.charCodeAt(i)]>=0) s+=v.charAt(i)
-        var code = from32to256(s)
+        return from32to256(s)
+    }
+    function decrypt(){
+        var code = clearedCode()
         if(code.length%16 != 0){
             form.decryptStatus.value = "Entered 'Safe Message' length is incorrect"
         } else {    
@@ -1878,8 +1888,10 @@ if (typeof module != 'undefined' && module.exports) module.exports = Sha256; // 
     function showLargeCodes(){
         var div = document.getElementById('largeCodes')
         if(div.style.display=='none'){
+            var i = Math.floor(stringHashCode(clearedCode()) % (256 * 256))
+            var hash = fromHexToBase32(i.toString(16))
             div.style.display = 'block'
-            div.innerHTML = '<hr>'+form.code.value+'<div style="background-color:MediumAquaMarine;"><hr><br><br><br><br><br><br><br><br><br><br><br>'+
+            div.innerHTML = '<hr>'+form.code.value+'<div style="background-color:MediumAquaMarine;"><hr>Check Sum: '+hash+'<br><br><br><br><br><br><br><br><br><br><br>'+
                             '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>'
         }else div.style.display = 'none'    
     }
