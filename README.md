@@ -16,11 +16,11 @@ Using [MessageSafe](https://messagesafe.github.io/) and the below routine the se
 3. Enter the secret, the password (or several passwords), and press Encrypt
 4. Press "Enlarge to make a photograph" button to show large encrypted codes.
 4. Make a picture of the codes with your other phone, this is the secure picture you want to store.
-5. Without connecting to anywhere, go to settings and do a complete "Factory Reset" for the first device. (If the secret is really valuable, the device can even be physically destroyed)
+5. Without connecting to anywhere, go to settings and do a complete "Factory Reset" for the first device. Paranoid Android users can perform storage encryption, in order to eliminate VERY remote possibility that something is saved in cache. For really valuable messages the device which saw your secret can be burned in fire.
 
 Similar routine can be followed for decryption. 
 
-Note. If you do use MessageSafe, it is wise to save its single HTML file in your mail box, in order to ensure future independent recoveries.
+Note. If you do use MessageSafe, it is wise to save its single HTML file in your mail archive, in order to ensure future independent recoveries.
 
 ## Cryptography
 
