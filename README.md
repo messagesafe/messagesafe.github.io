@@ -5,11 +5,11 @@ An HTML based offline encryption/decryption tool for highly valuable short messa
 
 ## The Problem
 
-If there is a highly valuable secret (like access key, recovery seed, crypto currency address), it is probably written on paper and is stored in a safe. It would be nice to encrypt it with a password and store it in several less secure locations, even in a mail box. Unfortunately, to do this, one would have to expose the secret to a computer, where the encryption would be performed. If the computer is infected by malicious software, the secret can be stolen. 
+If there is a highly valuable secret (like access key, recovery seed, crypto currency address), it is probably written on paper and is stored in a safe. It would be nice to encrypt it with a password and store it in several less secure locations like mail archive. Unfortunately, to do so, one would have to expose the secret to a computer, where the encryption would be performed. If the computer is infected by malicious software, the secret can be stolen. 
 
 ## The Solution
 
-Using MessageSafe and the below routine the secret can be encrypted securely.
+Using [MessageSafe](https://messagesafe.github.io/) and the below routine the secret can be encrypted securely.
 
 1. Open MessageSafe in any old smart phone (or tablet computer) as a web page.  
 2. Put the device in "airplane mode". MessageSafe is a single HTML file, it will work offline.
@@ -20,7 +20,7 @@ Using MessageSafe and the below routine the secret can be encrypted securely.
 
 Similar routine can be followed for decryption. 
 
-Note. If you do use MessageSafe, it is wise to save its single HTML file in your mail box, in order to ensure future independent decryptions.
+Note. If you do use MessageSafe, it is wise to save its single HTML file in your mail box, in order to ensure future independent recoveries.
 
 ## Cryptography
 
@@ -49,9 +49,10 @@ Decryption
      Message = AES.decrypt(Code, Key)
     
     
-Note. There is no checksum. Multiple copies of the SafeMessage will be stored in many locations. Message integrity is not an issue.
-
-Note. BCrypt salt is just a hash of the password, what is equivalent to no salt used. AES is employed in CBC mode with hard coded initialization array. This is due to the requirement to have the same output for the same input and password. 
+Notes 
+- There is no checksum. Multiple copies of the SafeMessage will be stored in many locations. Message integrity is not an issue.
+- BCrypt salt is just a hash of the password, what is functionally equivalent to no salt used. 
+- AES is employed in CBC mode with hard coded initialization array. This is due to the need to have the same output for the same input and password. 
 
 
 
