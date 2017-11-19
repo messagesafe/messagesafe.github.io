@@ -1861,7 +1861,7 @@ if (typeof module != 'undefined' && module.exports) module.exports = Sha256; // 
             var s = pwdFields()[i].value
             var v = ''
             for(var j=0;j<s.length;j++) if(s.charCodeAt(j)>32) v += s.charAt(j)                   
-            if(v.length>0) ar.push(s)
+            if(v.length>0) ar.push(v)
         }
         ar.sort()    
         var pwd = ''
